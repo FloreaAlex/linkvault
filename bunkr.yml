@@ -1,18 +1,16 @@
 mode: dev-review
 task:
-  title: "Add a web UI to LinkVault"
+  title: "Make LinkVault UI modern and beautiful"
   description: |
-    LinkVault has a REST API but no web interface.
-    Build a clean, modern web UI that lets users:
-    - See all their bookmarks in a nice layout
-    - Add new bookmarks with a form
-    - Filter by tag (clickable tags)
-    - Search bookmarks
-    - Delete bookmarks
-    - See stats (total count, popular tags)
-    
-    The UI should be served by the same Express server.
-    Make it look professional — this is a portfolio piece.
+    The current UI is too basic and ugly. Make it look like a modern web app:
+    - Dark theme with good contrast
+    - Cards for each bookmark with hover effects
+    - Smooth animations and transitions
+    - Better typography and spacing
+    - Mobile responsive
+    - The bookmark list should show below the search/form area
+    - Each bookmark card should show title (linked), description, tags as colored pills, and a delete button
+    - Make the overall design feel polished and professional
 
 agents:
   developer:
