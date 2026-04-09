@@ -1,16 +1,22 @@
 mode: dev-review
 task:
-  title: "Make LinkVault UI modern and beautiful"
+  title: "Redesign LinkVault UI to be truly impressive"
   description: |
-    The current UI is too basic and ugly. Make it look like a modern web app:
-    - Dark theme with good contrast
-    - Cards for each bookmark with hover effects
-    - Smooth animations and transitions
-    - Better typography and spacing
-    - Mobile responsive
-    - The bookmark list should show below the search/form area
-    - Each bookmark card should show title (linked), description, tags as colored pills, and a delete button
-    - Make the overall design feel polished and professional
+    The current UI works but looks amateur. Redesign it to be something 
+    you'd show in a portfolio. Think of apps like Raindrop.io or Pinboard 
+    but simpler.
+    
+    Key problems to fix:
+    - The form takes up too much space above the bookmarks
+    - Bookmarks should be the hero content — visible immediately
+    - Needs visual hierarchy: what's important should stand out
+    - Tag pills need better colors (not all the same)
+    - The "Add" form should be collapsible or in a modal
+    - Search should be prominent but not take a whole section
+    - Need empty state messaging when no bookmarks exist
+    
+    You have full creative freedom on the implementation approach.
+    Research modern UI patterns if needed.
 
 agents:
   developer:

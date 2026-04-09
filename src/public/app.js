@@ -14,6 +14,18 @@
   const searchInput = document.getElementById('search-input');
   const searchBtn = document.getElementById('search-btn');
   const clearSearchBtn = document.getElementById('clear-search');
+  // Modal controls
+  const openAddModalBtn = document.getElementById('open-add-modal');
+  const closeAddModalBtn = document.getElementById('close-add-modal');
+  const addModal = document.getElementById('add-modal');
+
+  // Modal toggle listeners
+  if (openAddModalBtn) {
+    openAddModalBtn.addEventListener('click', () => addModal.classList.remove('hidden'));
+  }
+  if (closeAddModalBtn) {
+    closeAddModalBtn.addEventListener('click', () => addModal.classList.add('hidden'));
+  }
 
   // Load all bookmarks initially
   let currentBookmarks = [];
@@ -112,6 +124,8 @@
       if (!res.ok) throw new Error('Failed to add');
       // Reset form
       form.reset();
+      // Close modal after adding
+      addModal.classList.add('hidden');
       filterTag = null;
       await loadBookmarks();
       await loadStats();

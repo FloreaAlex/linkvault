@@ -13,11 +13,22 @@
       <label for="token">API Token:</label>
       <input type="password" id="token" placeholder="optional token" />
     </div>
+    <!-- Search moved to header for prominence -->
+    <section id="search" class="header-search">
+      <input type="text" id="search-input" placeholder="Search…" />
+      <button id="search-btn">🔍</button>
+      <button id="clear-search">✕</button>
+    </section>
+    <!-- Add bookmark button triggers modal -->
+    <button id="open-add-modal" class="add-btn">+ Add Bookmark</button>
   </header>
 
   <section id="stats"></section>
 
-  <section id="add-bookmark">
+  <!-- Modal for adding a bookmark -->
+<div id="add-modal" class="modal hidden">
+  <div class="modal-content">
+    <span class="close-btn" id="close-add-modal">&times;</span>
     <h2>Add Bookmark</h2>
     <form id="bookmark-form">
       <input type="text" id="title" placeholder="Title" required />
@@ -26,14 +37,10 @@
       <input type="text" id="tags" placeholder="Tags (comma separated)" />
       <button type="submit">Add</button>
     </form>
-  </section>
+  </div>
+</div>
 
-  <section id="search">
-    <h2>Search</h2>
-    <input type="text" id="search-input" placeholder="Search term..." />
-    <button id="search-btn">Search</button>
-    <button id="clear-search">Clear</button>
-  </section>
+  <!-- Search moved to header; this section removed -->
 
   <section id="bookmarks">
     <h2>Bookmarks</h2>
