@@ -1,10 +1,15 @@
 mode: dev-review
 task:
-  title: "Improve LinkVault based on council review findings"
+  title: "Fix council findings and improve LinkVault"
   description: |
-    The council reviewed LinkVault and found issues.
-    Fix them and add any missing features for a complete bookmark manager.
-    Research best practices online if needed.
+    The council found these issues in LinkVault:
+    1. No persistence across restarts (data lost on restart)
+    2. No URL format validation
+    3. Missing update (PUT) and delete (DELETE) endpoints
+    4. No CORS handling
+    5. Test file references undefined DATA_FILE constant
+    
+    Fix all issues. Research best practices if needed.
 
 agents:
   developer:
@@ -29,10 +34,10 @@ providers:
 mcp_servers:
   tavily:
     env:
-      TAVILY_API_KEY: ${TAVILY_API_KEY}
-  github:
-    env:
-      GITHUB_TOKEN: ${GITHUB_TOKEN}
+      TAVILY_API_KEY: placeholder
+      HTTPS_PROXY: http://x:aoc_a37eb8798237351d8dc6c1d468c406c805766ab1814fb2cb1fa784fc225ac223@localhost:10255
+      NODE_EXTRA_CA_CERTS: /home/yuji/.onecli-ca.pem
+      NODE_USE_ENV_PROXY: "1"
 
 orchestration:
   max_iterations: 3
