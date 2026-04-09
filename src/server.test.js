@@ -74,4 +74,39 @@ describe('LinkVault API', () => {
     expect(commonTag).toBeDefined();
     expect(commonTag.count).toBe(2);
   });
+
+  test('PUT /bookmarks/:id edits a bookmark', async () => {
+    const createRes = await request(app).post('/bookmarks').set(authHeader()).send({ title: 'Old', url: 'http://old.com' });
+    const bm = createRes.body;
+    const updatedPayload = { title: 'New Title', url: 'https://new.com', description: 'Updated', tags: ['updated'] };
+    const editRes = await request(app).put(`/bookmarks/${bm.id}`).set(authHeader()).send(updatedPayload);
+    expect(editRes.statusCode).toBe(200);
+    expect(editRes.body.title).toBe(updatedPayload.title);
+    expect(editRes.body.url).toBe(updatedPayload.url);
+    expect(editRes.body.description).toBe(updatedPayload.description);
+    expect(editRes.body.tags).toEqual(updatedPayload.tags);
+  });
+
+  test('GET /export returns JSON file', async () => {
+    await request(app).post('/bookmarks').set(authHeader()).send({ title: 'Exported', url: 'http://exp.com' });
+    const res = await request(app).get('/export').set(authHeader());
+    expect(res.statusCode).toBe(200);
+    expect(res.headers['content-type']).toMatch(/application\/json/);
+    expect(res.headers['content-disposition']).toContain('attachment');
+    const data = JSON.parse(res.text);
+    expect(Array.isArray(data)).toBe(true);
+    expect(data.length).toBeGreaterThan(0);
+  });
+
+  test('POST /import replaces bookmarks', async () => {
+    // Ensure starting empty
+    await request(app).post('/import').set(authHeader()).send([]);
+    const importData = [{ title: 'Imp1', url: 'http://imp1.com' }, { title: 'Imp2', url: 'https://imp2.org', tags: ['test'] }];
+    const impRes = await request(app).post('/import').set(authHeader()).send(importData);
+    expect(impRes.statusCode).toBe(200);
+    expect(impRes.body.imported).toBe(importData.length);
+    const list = await request(app).get('/bookmarks').set(authHeader());
+    expect(list.body.length).toBe(importData.length);
+  });
+
 });
