@@ -1,0 +1,36 @@
+mode: supervisor
+task:
+  title: "Build LinkVault — a personal bookmark manager"
+  description: |
+    Build a personal bookmark manager called LinkVault.
+    
+    What it should do:
+    - Save bookmarks with a title, URL, description, and tags
+    - Browse all bookmarks or filter by tag
+    - Search bookmarks by title or description
+    - Show statistics (total bookmarks, popular tags)
+    - Clean, simple web interface
+    
+    It should work locally without any cloud services or complex setup.
+    Keep it simple and elegant. A single user tool, not a SaaS product.
+
+agents:
+  manager:
+    persona: meta/architect
+    provider: local
+  backend:
+    persona: developers/backend-architect
+    provider: local
+  frontend:
+    persona: developers/frontend-specialist
+    provider: local
+
+providers:
+  local:
+    api_key: none
+    base_url: http://localhost:8000/v1
+    tier_map:
+      frontier: openai/gpt-oss-120b
+      reasoning: openai/gpt-oss-120b
+      coding: openai/gpt-oss-120b
+      fast: openai/gpt-oss-120b
