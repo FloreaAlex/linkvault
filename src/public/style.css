@@ -25,7 +25,7 @@ body {
 }
 
 header {
-  background-color: var(--color-primary);
+  background: linear-gradient(135deg, var(--color-primary) 30%, #8e24aa 100%);
   color: var(--color-on-primary);
   padding: 1rem;
   display: flex;
@@ -98,7 +98,22 @@ header {
 .tag:nth-child(5n+3) { background-color: #354c44; }
 .tag:nth-child(5n+4) { background-color: #453c39; }
 .tag:nth-child(5n)   { background-color: #3b4252; }
-header h1 { margin: 0; font-size: 1.5rem; }
+header h1 { margin: 0; font-size: 2rem; font-weight: 700; }
+
+section h2 {
+  margin-top: 0;
+  font-size: 1.75rem;
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+}
+
+/* Modal responsive */
+@media (max-width: 600px) {
+  .modal-content {
+    width: 95%;
+    padding: 1rem;
+  }
+}
 #auth {
   display: flex;
   align-items: center;
@@ -113,6 +128,21 @@ section {
   max-width: 900px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* Grid layout for bookmark list */
+#bookmark-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Empty state styling */
+#bookmark-list p {
+  text-align: center;
+  color: var(--color-muted);
+  font-style: italic;
+  grid-column: 1 / -1; /* span full width */
 }
 
 /* Form elements */
@@ -151,7 +181,7 @@ section {
   background: var(--color-surface);
   border-radius: 6px;
   padding: 1rem;
-  margin-bottom: 1rem;
+  /* margin-bottom removed – grid gap handles spacing */
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
   display: flex;

@@ -1,19 +1,18 @@
 mode: dev-review
 task:
-  title: "Make LinkVault UI beautiful without adding build tools"
+  title: "Make LinkVault UI beautiful"
   description: |
-    A design debate concluded: improve the existing CSS without adding 
-    build tools like Tailwind or PostCSS. Keep it vanilla CSS.
+    The UI debate concluded: improve existing CSS without build tools.
     
-    Make the UI look like a professional product:
-    - Grid layout for bookmarks (2-3 columns on desktop, 1 on mobile)
-    - Better card design with subtle shadows and hover animations
-    - Improved color palette (not just flat purple)
-    - Better typography hierarchy
-    - Smooth transitions on all interactive elements
-    - The bookmark list should be the hero — visible immediately
-    - The form should be in a modal (click + Add Bookmark to open)
-    - Make it responsive
+    Make it look like a professional product:
+    - Grid layout for bookmarks (2-3 columns on desktop)
+    - Card shadows and hover effects with transitions
+    - Better color palette with gradients
+    - Good typography with proper hierarchy
+    - Responsive (works on mobile)
+    - Form in a modal (toggle with + button)
+    - Bookmark list is the hero — visible immediately
+    - Empty state when no bookmarks exist
 
 agents:
   developer:
@@ -28,7 +27,7 @@ agents:
 providers:
   local:
     api_key: none
-    base_url: http://host.docker.internal:8000/v1
+    base_url: http://localhost:8000/v1
     tier_map:
       frontier: openai/gpt-oss-120b
       reasoning: openai/gpt-oss-120b
