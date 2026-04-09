@@ -1,0 +1,28 @@
+{
+  "name": "linkvault",
+  "version": "1.0.0",
+  "description": "> **This repository is built and maintained entirely by AI agents.** No human wrote any code in this project. Every line was produced by agents orchestrated through [bunkr](https://github.com/FloreaAlex/bunkr) — a multi-agent orchestration platform.",
+  "main": "src/server.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FloreaAlex/linkvault.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FloreaAlex/linkvault/issues"
+  },
+  "homepage": "https://github.com/FloreaAlex/linkvault#readme",
+  "dependencies": {
+    "express": "^5.2.1",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "jest": "^30.3.0",
+    "supertest": "^7.2.2"
+  }
+}
