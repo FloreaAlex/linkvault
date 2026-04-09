@@ -3,18 +3,17 @@ const fs = require('fs');
 const path = require('path');
 
 // Import the app and DATA_FILE constant
-const { app, DATA_FILE } = require('./server');
+const { app, DATA_FILE, resetData } = require('./server');
 
-// Helper to reset data file before each test
-function resetDataFile() {
-  try {
-    fs.unlinkSync(DATA_FILE);
-  } catch (e) {}
+// Helper to reset in-memory data before each test
+function resetInMemory() {
+  // Use the exported resetData function from server module
+  resetData();
 }
 
 describe('LinkVault API', () => {
   beforeEach(() => {
-    resetDataFile();
+    resetInMemory();
   });
 
   test('POST /bookmarks creates a bookmark', async () => {

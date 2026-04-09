@@ -6,24 +6,20 @@ const { randomUUID } = require('crypto');
 const app = express();
 app.use(express.json());
 
-// Path to JSON file storing bookmarks
-const DATA_FILE = path.join(__dirname, 'data.json');
+// In-memory storage for bookmarks
+let bookmarks = [];
 
-/** Load bookmarks from disk; if missing, start with empty array */
+/** Load bookmarks from memory */
 function loadBookmarks() {
-  try {
-    const raw = fs.readFileSync(DATA_FILE, 'utf-8');
-    return JSON.parse(raw);
-  } catch (err) {
-    // If file does not exist or is malformed, reset it
-    if (err.code !== 'ENOENT') console.error('Failed to read data file:', err);
-    return [];
-  }
+  return bookmarks;
 }
-/** Persist bookmarks array to disk */
-function saveBookmarks(bookmarks) {
-  fs.writeFileSync(DATA_FILE, JSON.stringify(bookmarks, null, 2), 'utf-8');
+/** Persist bookmarks to memory (no-op for file) */
+function saveBookmarks(updated) {
+  bookmarks = updated;
 }
+
+// Legacy constant kept for compatibility (not used)
+const DATA_FILE = path.join(__dirname, 'data.json');
 
 // Helper: validate bookmark payload
 function validateBookmark(payload) {
@@ -108,7 +104,7 @@ if (require.main === module) {
   app.listen(PORT, () => console.log(`LinkVault server listening on port ${PORT}`));
 }
 
-module.exports = { app, DATA_FILE, resetData: () => {
+module.exports = { app, resetData: () => {
   bookmarks = [];
-  saveBookmarks(bookmarks);
+  // No need to persist since storage is in-memory
 } };

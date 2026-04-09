@@ -1,25 +1,20 @@
 mode: dev-review
 task:
-  title: "Build LinkVault — a personal bookmark manager"
+  title: "Improve LinkVault based on council review findings"
   description: |
-    Build a personal bookmark manager called LinkVault.
-    
-    Users should be able to:
-    - Save bookmarks with a title, URL, description, and tags
-    - Browse all bookmarks or filter by tag
-    - Search bookmarks by title or description
-    - See statistics (total bookmarks, popular tags)
-    
-    It should work locally without cloud services.
-    Keep it simple, elegant, and production-quality.
+    The council reviewed LinkVault and found issues.
+    Fix them and add any missing features for a complete bookmark manager.
+    Research best practices online if needed.
 
 agents:
   developer:
     persona: developers/senior-fullstack
     provider: local
+    tools: [read, write, shell, git, web]
   reviewer:
     persona: reviewers/adversarial-reviewer
     provider: local
+    tools: [read, shell, git, web]
 
 providers:
   local:
@@ -30,6 +25,14 @@ providers:
       reasoning: openai/gpt-oss-120b
       coding: openai/gpt-oss-120b
       fast: openai/gpt-oss-120b
+
+mcp_servers:
+  tavily:
+    env:
+      TAVILY_API_KEY: ${TAVILY_API_KEY}
+  github:
+    env:
+      GITHUB_TOKEN: ${GITHUB_TOKEN}
 
 orchestration:
   max_iterations: 3
