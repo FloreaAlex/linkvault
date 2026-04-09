@@ -7,6 +7,9 @@
     return token ? { Authorization: `Bearer ${token}` } : {};
   };
 
+  // Helper to escape HTML content safely
+  function esc(text) { const el = document.createElement('div'); el.textContent = text; return el.innerHTML; }
+
   // Elements
   const bookmarkListEl = document.getElementById('bookmark-list');
   const statsEl = document.getElementById('stats');
@@ -29,7 +32,7 @@
 
   // Load all bookmarks initially
   let currentBookmarks = [];
-  let filterTag = null; // active tag filter
+  const appState = { filterTag: null }; // single source of truth for filter
 
   function renderStats(total, popularTags) {
     const tagsHtml = popularTags.map(t => `<span class="tag" data-tag="${t.tag}">${t.tag} (${t.count})</span>`).join(' ');
@@ -40,17 +43,21 @@
     });
   }
 
-  function renderBookmarks(list) {
+  function renderBookmarks(list, _filterTag) { // added param for compatibility
     if (list.length === 0) {
-      bookmarkListEl.innerHTML = '<p>No bookmarks found.</p>';
+      bookmarkListEl.innerHTML = '<div class="empty-state">No bookmarks found.</div>';
       return;
     }
     const html = list.map(b => {
-      const tagsHtml = b.tags.map(t => `<span class="tag" data-tag="${t}">${t}</span>`).join(' ');
+      const safeTitle = esc(b.title);
+      const safeDesc = b.description ? esc(b.description) : '';
+      const tagsHtml = b.tags.map(t => `<span class="tag" data-tag="${esc(t)}">${esc(t)}</span>`).join(' ');
+      const urlValid = /^https?:\/\//i.test(b.url);
+      const titleLink = urlValid ? `<a href="${b.url}" target="_blank" rel="noopener" class="bookmark-title">${safeTitle}</a>` : `<span class="bookmark-title">${safeTitle}</span>`;
       return `
         <div class="bookmark-item" data-id="${b.id}">
-          <a href="${b.url}" target="_blank" rel="noopener" class="bookmark-title">${b.title}</a>
-          ${b.description ? `<p>${b.description}</p>` : ''}
+          ${titleLink}
+          ${safeDesc ? `<p>${safeDesc}</p>` : ''}
           <div>${tagsHtml}</div>
           <button class="delete-btn" title="Delete">✕</button>
         </div>`;
@@ -70,14 +77,15 @@
     });
   }
 
-  async function loadBookmarks() {
+  async function loadBookmarks(passedTag) {
     try {
       const url = new URL('/bookmarks', window.location.origin);
-      if (filterTag) url.searchParams.append('tag', filterTag);
+      const tag = passedTag !== undefined ? passedTag : filterTag;
+      if (tag) url.searchParams.append('tag', tag);
       const res = await fetch(url, { headers: authHeader() });
       if (!res.ok) throw new Error('Failed to load bookmarks');
       currentBookmarks = await res.json();
-      renderBookmarks(currentBookmarks);
+      renderBookmarks(currentBookmarks, passedTag);
     } catch (e) {
       console.error(e);
     }
@@ -138,6 +146,11 @@
   clearSearchBtn.addEventListener('click', () => { searchInput.value = ''; filterTag = null; loadBookmarks(); });
 
   // Initial load
-  loadBookmarks();
+  loadBookmarks(filterTag);
   loadStats();
+
+  // expose functions for testing / external use
+  window.loadBookmarks = loadBookmarks;
+  window.loadStats = loadStats;
+  window.renderBookmarks = renderBookmarks;
 })();

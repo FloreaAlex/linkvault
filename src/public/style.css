@@ -138,7 +138,7 @@ section {
 }
 
 /* Empty state styling */
-#bookmark-list p {
+.empty-state {
   text-align: center;
   color: var(--color-muted);
   font-style: italic;
