@@ -1,30 +1,21 @@
-mode: supervisor
+mode: council
 task:
-  title: "Build LinkVault — a personal bookmark manager"
+  title: "Review LinkVault API for quality and completeness"
   description: |
-    Build a personal bookmark manager called LinkVault.
-    
-    What it should do:
-    - Save bookmarks with a title, URL, description, and tags
-    - Browse all bookmarks or filter by tag
-    - Search bookmarks by title or description
-    - Show statistics (total bookmarks, popular tags)
-    - Clean, simple web interface
-    
-    It should work locally without any cloud services or complex setup.
-    Keep it simple and elegant. A single user tool, not a SaaS product.
-
+    Review the LinkVault bookmark manager API.
+    Is it well-structured? Are there bugs? Is error handling sufficient?
+    Does it meet the requirements (save, browse, search, filter by tag, stats)?
+    What's missing? What should be improved?
 agents:
-  manager:
-    persona: meta/architect
+  pragmatic:
+    persona: reviewers/pragmatic-reviewer
     provider: local
-  backend:
-    persona: developers/backend-architect
+  security:
+    persona: reviewers/security-reviewer
     provider: local
-  frontend:
-    persona: developers/frontend-specialist
+  adversarial:
+    persona: reviewers/adversarial-reviewer
     provider: local
-
 providers:
   local:
     api_key: none
@@ -34,3 +25,5 @@ providers:
       reasoning: openai/gpt-oss-120b
       coding: openai/gpt-oss-120b
       fast: openai/gpt-oss-120b
+orchestration:
+  strategy: majority
