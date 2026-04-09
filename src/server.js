@@ -218,59 +218,21 @@ app.get('/stats', authRequired, (req, res) => {
   res.json({ totalBookmarks: total, popularTags });
 });
 
-// Export all bookmarks as JSON file download
-app.get('/export', authRequired, (req, res) => {
-  const bookmarks = loadBookmarks();
-  const json = JSON.stringify(bookmarks, null, 2);
-  res.setHeader('Content-Type', 'application/json');
-  res.setHeader('Content-Disposition', 'attachment; filename="bookmarks.json"');
-  res.send(json);
-});
-
-// Import bookmarks from uploaded JSON (replace existing data)
-app.post('/import', authRequired, async (req, res) => {
-  // Expect raw JSON array in body
-  const incoming = req.body;
-  if (!Array.isArray(incoming)) {
-    return res.status(400).json({ error: 'Invalid format: expected an array of bookmarks' });
-  }
-  const errors = [];
-  const newBookmarks = [];
-  for (const [i, bm] of incoming.entries()) {
-    const err = validateBookmark(bm);
-    if (err.length) {
-      errors.push({ index: i, errors: err });
-      continue;
-    }
-    // Ensure required fields exist; generate id and timestamps if missing
-    const now = new Date().toISOString();
-    const processed = {
-      id: bm.id || randomUUID(),
-      title: sanitize(bm.title),
-      url: bm.url,
-      description: sanitize(bm.description || ''),
-      tags: (bm.tags || []).map(t => sanitize(String(t).trim())).filter(Boolean),
-      createdAt: bm.createdAt || now,
-    };
-    newBookmarks.push(processed);
-  }
-  if (errors.length) {
-    return res.status(400).json({ importErrors: errors });
-  }
-  // Replace stored bookmarks
-  saveBookmarks(newBookmarks);
-  res.json({ imported: newBookmarks.length });
-});
-
 // Basic health check
 app.get('/health', (req, res) => res.send('OK'));
-// Generic error handler placeholder (will be moved later)
-// Note: 404 and error handling will be defined after all route handlers.
+// 404 handler for unknown routes
+app.use((req, res) => {
+  res.status(404).json({ error: 'Not Found' });
+});
 
+// Generic error handler to avoid leaking stack traces
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ error: 'Internal Server Error' });
+});
 
 // Update endpoint – modify existing bookmark
 app.put('/bookmarks/:id', authRequired, (req, res) => {
-  console.log('PUT received id:', req.params.id);
   const { id } = req.params;
   const payload = req.body;
   const errors = validateBookmark(payload);
@@ -278,8 +240,6 @@ app.put('/bookmarks/:id', authRequired, (req, res) => {
   const bookmarks = loadBookmarks();
   const index = bookmarks.findIndex(b => b.id === id);
   if (index === -1) return res.status(404).json({ error: 'Bookmark not found' });
-  console.log('Bookmarks before update count:', bookmarks.length);
-  console.log('Bookmark IDs before update:', bookmarks.map(b=>b.id));
   const existing = bookmarks[index];
   const updatedBm = {
     ...existing,

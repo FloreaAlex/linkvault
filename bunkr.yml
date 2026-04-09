@@ -1,13 +1,11 @@
 mode: dev-review
 task:
-  title: "Add edit and import/export to LinkVault"
+  title: "Add import and export JSON buttons to LinkVault"
   description: |
-    LinkVault needs these features:
-    1. Edit existing bookmarks (click to edit title, URL, description, tags)
-    2. Export all bookmarks as JSON (download button)
-    3. Import bookmarks from JSON file (upload button)
-    4. Show bookmark creation date in a human-friendly format
-    5. Add a favicon
+    Add two features to the bookmark manager:
+    1. Export button that downloads all bookmarks as a JSON file
+    2. Import button that lets you upload a JSON file to add bookmarks
+    Keep the existing UI working — don't break bookmark rendering.
 
 agents:
   developer:
@@ -22,7 +20,7 @@ agents:
 providers:
   local:
     api_key: none
-    base_url: http://localhost:8000/v1
+    base_url: http://host.docker.internal:8000/v1
     tier_map:
       frontier: openai/gpt-oss-120b
       reasoning: openai/gpt-oss-120b
@@ -30,4 +28,4 @@ providers:
       fast: openai/gpt-oss-120b
 
 orchestration:
-  max_iterations: 3
+  max_iterations: 2
