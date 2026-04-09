@@ -1,11 +1,19 @@
 mode: dev-review
 task:
-  title: "Add import and export JSON buttons to LinkVault"
+  title: "Make LinkVault UI beautiful without adding build tools"
   description: |
-    Add two features to the bookmark manager:
-    1. Export button that downloads all bookmarks as a JSON file
-    2. Import button that lets you upload a JSON file to add bookmarks
-    Keep the existing UI working — don't break bookmark rendering.
+    A design debate concluded: improve the existing CSS without adding 
+    build tools like Tailwind or PostCSS. Keep it vanilla CSS.
+    
+    Make the UI look like a professional product:
+    - Grid layout for bookmarks (2-3 columns on desktop, 1 on mobile)
+    - Better card design with subtle shadows and hover animations
+    - Improved color palette (not just flat purple)
+    - Better typography hierarchy
+    - Smooth transitions on all interactive elements
+    - The bookmark list should be the hero — visible immediately
+    - The form should be in a modal (click + Add Bookmark to open)
+    - Make it responsive
 
 agents:
   developer:
@@ -28,4 +36,4 @@ providers:
       fast: openai/gpt-oss-120b
 
 orchestration:
-  max_iterations: 2
+  max_iterations: 3
