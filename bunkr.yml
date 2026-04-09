@@ -1,25 +1,29 @@
 mode: dev-review
 task:
-  title: "Fix council findings and improve LinkVault"
+  title: "Add a web UI to LinkVault"
   description: |
-    The council found these issues in LinkVault:
-    1. No persistence across restarts (data lost on restart)
-    2. No URL format validation
-    3. Missing update (PUT) and delete (DELETE) endpoints
-    4. No CORS handling
-    5. Test file references undefined DATA_FILE constant
+    LinkVault has a REST API but no web interface.
+    Build a clean, modern web UI that lets users:
+    - See all their bookmarks in a nice layout
+    - Add new bookmarks with a form
+    - Filter by tag (clickable tags)
+    - Search bookmarks
+    - Delete bookmarks
+    - See stats (total count, popular tags)
     
-    Fix all issues. Research best practices if needed.
+    The UI should be served by the same Express server.
+    Make it look professional — this is a portfolio piece.
 
 agents:
   developer:
-    persona: developers/senior-fullstack
+    persona: developers/frontend-specialist
     provider: local
     tools: [read, write, shell, git, web]
+    mcp: [tavily]
   reviewer:
-    persona: reviewers/adversarial-reviewer
+    persona: reviewers/pragmatic-reviewer
     provider: local
-    tools: [read, shell, git, web]
+    tools: [read, shell]
 
 providers:
   local:

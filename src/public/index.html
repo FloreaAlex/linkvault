@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>LinkVault</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>LinkVault</h1>
+    <div id="auth">
+      <label for="token">API Token:</label>
+      <input type="password" id="token" placeholder="optional token" />
+    </div>
+  </header>
+
+  <section id="stats"></section>
+
+  <section id="add-bookmark">
+    <h2>Add Bookmark</h2>
+    <form id="bookmark-form">
+      <input type="text" id="title" placeholder="Title" required />
+      <input type="url" id="url" placeholder="URL" required />
+      <textarea id="description" placeholder="Description"></textarea>
+      <input type="text" id="tags" placeholder="Tags (comma separated)" />
+      <button type="submit">Add</button>
+    </form>
+  </section>
+
+  <section id="search">
+    <h2>Search</h2>
+    <input type="text" id="search-input" placeholder="Search term..." />
+    <button id="search-btn">Search</button>
+    <button id="clear-search">Clear</button>
+  </section>
+
+  <section id="bookmarks">
+    <h2>Bookmarks</h2>
+    <div id="bookmark-list"></div>
+  </section>
+
+<script src="app.js"></script>
+</body>
+</html>

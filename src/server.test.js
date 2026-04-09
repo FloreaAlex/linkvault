@@ -11,6 +11,12 @@ function resetInMemory() {
   resetData();
 }
 
+// Set a test API token for authentication
+process.env.API_TOKEN = 'test-secret-token';
+function authHeader() {
+  return { Authorization: `Bearer ${process.env.API_TOKEN}` };
+}
+
 describe('LinkVault API', () => {
   beforeEach(() => {
     resetInMemory();
@@ -23,7 +29,7 @@ describe('LinkVault API', () => {
       description: 'AI research lab',
       tags: ['ai', 'research']
     };
-    const res = await request(app).post('/bookmarks').send(payload);
+    const res = await request(app).post('/bookmarks').set(authHeader()).send(payload);
     expect(res.statusCode).toBe(201);
     expect(res.body).toMatchObject({
       title: payload.title,
@@ -36,31 +42,31 @@ describe('LinkVault API', () => {
 
   test('GET /bookmarks returns list and can filter by tag', async () => {
     // Create two bookmarks
-    await request(app).post('/bookmarks').send({ title: 'A', url: 'http://a.com', tags: ['foo'] });
-    await request(app).post('/bookmarks').send({ title: 'B', url: 'http://b.com', tags: ['bar'] });
+    await request(app).post('/bookmarks').set(authHeader()).send({ title: 'A', url: 'http://a.com', tags: ['foo'] });
+    await request(app).post('/bookmarks').set(authHeader()).send({ title: 'B', url: 'http://b.com', tags: ['bar'] });
 
-    const allRes = await request(app).get('/bookmarks');
+    const allRes = await request(app).get('/bookmarks').set(authHeader());
     expect(allRes.statusCode).toBe(200);
     expect(allRes.body.length).toBe(2);
 
-    const fooRes = await request(app).get('/bookmarks').query({ tag: 'foo' });
+    const fooRes = await request(app).get('/bookmarks').set(authHeader()).query({ tag: 'foo' });
     expect(fooRes.statusCode).toBe(200);
     expect(fooRes.body.length).toBe(1);
     expect(fooRes.body[0].title).toBe('A');
   });
 
   test('GET /search finds bookmarks by title or description', async () => {
-    await request(app).post('/bookmarks').send({ title: 'Node.js', url: 'http://nodejs.org', description: 'JavaScript runtime' });
-    const res = await request(app).get('/search').query({ q: 'javascript' });
+    await request(app).post('/bookmarks').set(authHeader()).send({ title: 'Node.js', url: 'http://nodejs.org', description: 'JavaScript runtime' });
+    const res = await request(app).get('/search').set(authHeader()).query({ q: 'javascript' });
     expect(res.statusCode).toBe(200);
     expect(res.body.length).toBe(1);
     expect(res.body[0].title).toBe('Node.js');
   });
 
   test('GET /stats returns total count and popular tags', async () => {
-    await request(app).post('/bookmarks').send({ title: 'One', url: 'http://one', tags: ['common'] });
-    await request(app).post('/bookmarks').send({ title: 'Two', url: 'http://two', tags: ['common', 'extra'] });
-    const res = await request(app).get('/stats');
+    await request(app).post('/bookmarks').set(authHeader()).send({ title: 'One', url: 'http://one', tags: ['common'] });
+    await request(app).post('/bookmarks').set(authHeader()).send({ title: 'Two', url: 'http://two', tags: ['common', 'extra'] });
+    const res = await request(app).get('/stats').set(authHeader());
     expect(res.statusCode).toBe(200);
     expect(res.body.totalBookmarks).toBe(2);
     // popularTags should include 'common' with count 2
